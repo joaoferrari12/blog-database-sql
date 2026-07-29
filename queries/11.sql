@@ -1,0 +1,28 @@
+-- Query 11: Who has the most posts and who has the least? (authors at the max and min post counts)
+SELECT
+PERSON.FIRST_NAME,
+PERSON.LAST_NAME,
+COUNT(POST.PERSON_ID) AS 'Number of Posts'
+FROM POST
+RIGHT JOIN PERSON
+ON POST.PERSON_ID = PERSON.PERSON_ID
+GROUP BY PERSON.PERSON_ID
+
+HAVING COUNT(POST.PERSON_ID) = (
+    SELECT MAX(PostCount) FROM (
+        SELECT COUNT(POST.PERSON_ID) AS PostCount
+        FROM POST
+        RIGHT JOIN PERSON
+        ON POST.PERSON_ID = PERSON.PERSON_ID
+        GROUP BY PERSON.PERSON_ID
+    ) AS SubQuery
+)
+OR COUNT(POST.PERSON_ID) = (
+    SELECT MIN(PostCount) FROM (
+        SELECT COUNT(POST.PERSON_ID) AS PostCount
+        FROM POST
+        RIGHT JOIN PERSON
+        ON POST.PERSON_ID = PERSON.PERSON_ID
+        GROUP BY PERSON.PERSON_ID
+    ) AS SubQuery
+);

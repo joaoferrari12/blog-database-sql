@@ -1,0 +1,9 @@
+-- Query 10: Find the most-liked posts, including posts with zero likes.
+SELECT
+POST.TITLE AS 'Title',
+COUNT(POST_LIKE.POST_ID) AS 'Number of Likes'
+FROM POST
+LEFT JOIN POST_LIKE
+ON POST.POST_ID = POST_LIKE.POST_ID
+GROUP BY POST.POST_ID
+ORDER BY COUNT(POST_LIKE.POST_ID) DESC, POST.POST_ID;
